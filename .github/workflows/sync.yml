@@ -1,0 +1,54 @@
+name: Sync agents
+
+on:
+  schedule:
+    - cron: "17 4 * * 1" # каждый понедельник, 04:17 UTC
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - scripts/**
+      - .github/workflows/sync.yml
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch upstream agency-agents
+        run: git clone --depth 1 https://github.com/msitarzewski/agency-agents "$RUNNER_TEMP/aa"
+
+      - name: Update Claude Code agents
+        run: |
+          rm -f .claude/agents/*.md
+          bash "$RUNNER_TEMP/aa/scripts/install.sh" --tool claude-code --path "$PWD/.claude/agents"
+
+      - name: Build claude.ai skill
+        run: |
+          python3 -I scripts/build_skill.py "$RUNNER_TEMP/aa" skill/agency-agents
+          (cd skill && zip -qr "$RUNNER_TEMP/agency-agents-skill.zip" agency-agents)
+
+      - name: Commit changes
+        run: |
+          git add -A .claude/agents skill
+          if git diff --cached --quiet; then
+            echo "No changes"
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -m "Sync agents from msitarzewski/agency-agents@$(git -C "$RUNNER_TEMP/aa" rev-parse --short HEAD)"
+            git push
+          fi
+
+      - name: Publish skill zip to release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view skill-latest >/dev/null 2>&1 || \
+            gh release create skill-latest --title "Навык agency-agents для claude.ai" \
+              --notes "Свежая сборка навыка. Скачайте agency-agents-skill.zip и загрузите в claude.ai: Настройки → Возможности → Навыки."
+          gh release upload skill-latest "$RUNNER_TEMP/agency-agents-skill.zip" --clobber
