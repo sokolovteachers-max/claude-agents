@@ -9,6 +9,5 @@
 
 ```bash
 git clone --depth 1 https://github.com/msitarzewski/agency-agents /tmp/aa
-rm -f .claude/agents/*.md && cp /tmp/aa/*/*.md .claude/agents/ 2>/dev/null
-# либо: /tmp/aa/scripts/install.sh --tool claude-code --path .claude/agents
+/tmp/aa/scripts/install.sh --tool claude-code --path .claude/agents
 ```
