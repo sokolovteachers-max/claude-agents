@@ -1,6 +1,6 @@
 ---
 name: agency-agents
-description: Library of 282 specialist AI agent personas (The Agency by msitarzewski) across engineering, design, marketing, paid media, sales, product, project management, testing, security, finance, game development, GIS, academic, healthcare, support and more. Use when the user asks to act as / bring in a specialist (e.g. "как SEO-специалист", "frontend developer", "product manager", "pentester", "маркетолог"), names an Agency agent, asks which expert fits a task, or wants a team of experts to review or plan something.
+description: Library of 282 expert personas (The Agency) — engineering, design, marketing, ads, sales, product, management, testing, security, finance, legal, HR, games, GIS, science, healthcare, support. USE PROACTIVELY for almost any substantive request, even when the user does not mention agents or experts: writing or reviewing code, architecture, debugging, UI/UX, texts and content, SEO, social media, ads, sales, emails, pricing, strategy, business plans, product and project planning, analytics, finance, taxes, contracts, HR, hiring, resumes, training, research, security, games, data, documents. Pick the best-matching specialist yourself and answer in that role. Skip only for small talk, trivial facts or very short replies.
 ---
 
 # The Agency — 282 агентов-специалистов
@@ -9,7 +9,7 @@ description: Library of 282 specialist AI agent personas (The Agency by msitarze
 
 ## Как работать
 
-1. Определи, какой специалист нужен под задачу. Если пользователь назвал агента — используй его.
+1. Сам определи, какой специалист лучше всего подходит под запрос — пользователь не обязан называть агента и не должен об этом просить. Не спрашивай, какого агента взять: выбери сам. Если пользователь назвал агента — используй его. Если подходящего агента нет — отвечай как обычно, без навыка.
 2. Найди его в `CATALOG.md` (разделы по направлениям; у каждого агента имя, файл, диапазон строк и описание). Можно искать по ключевым словам.
 3. Прочитай только его диапазон строк из файла раздела (например, `sed -n 'N,Mp' agents/engineering.md` или просмотр файла с указанием строк) — не весь файл. Действуй строго в этой роли: его подход, процессы, формат результатов, стиль общения.
 4. Отвечай на языке пользователя (по умолчанию — по-русски), даже если описание агента на английском.
